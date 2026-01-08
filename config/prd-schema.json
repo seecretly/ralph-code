@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ralph PRD Schema",
+  "description": "Product Requirements Document schema for Ralph Code",
+  "type": "object",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Name of the project"
+    },
+    "tasks": {
+      "type": "object",
+      "description": "Map of task ID to task entry",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Task description and requirements"
+          },
+          "branchName": {
+            "type": "string",
+            "description": "Git branch name for this task"
+          },
+          "passes": {
+            "type": "boolean",
+            "description": "Whether the task has passed all quality checks"
+          },
+          "prUrl": {
+            "type": "string",
+            "description": "URL of the created pull request"
+          },
+          "attempts": {
+            "type": "number",
+            "description": "Number of execution attempts"
+          },
+          "lastAttemptAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of last execution attempt"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if task failed"
+          }
+        },
+        "required": ["description", "branchName", "passes", "attempts"]
+      }
+    },
+    "version": {
+      "type": "number",
+      "description": "PRD version number"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  },
+  "required": ["projectName", "tasks", "version", "updatedAt"]
+}

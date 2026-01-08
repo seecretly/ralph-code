@@ -1,0 +1,32 @@
+{
+  "name": "ralph-code",
+  "version": "0.1.0",
+  "description": "Autonomous AI agent orchestration using Claude Code, Ralph loop pattern, and Vibe Kanban",
+  "private": true,
+  "workspaces": [
+    "workers",
+    "execution-server"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=workers",
+    "deploy": "npm run deploy --workspace=workers",
+    "deploy:dev": "npm run deploy:dev --workspace=workers",
+    "test": "npm run test --workspaces",
+    "exec-server": "npm start --workspace=execution-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naturaumana-ai/ralph-code.git"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "automation",
+    "claude-code",
+    "ralph",
+    "vibe-kanban",
+    "cloudflare-workers"
+  ],
+  "author": "Naturaumana AI",
+  "license": "MIT"
+}

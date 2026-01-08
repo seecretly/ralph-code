@@ -1,0 +1,22 @@
+{
+  "name": "@ralph-code/workers",
+  "version": "0.1.0",
+  "description": "Ralph Coordinator Worker - Cloudflare Workers orchestration",
+  "main": "./ralph-coordinator.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:dev": "wrangler deploy --env dev",
+    "tail": "wrangler tail",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.78.0"
+  }
+}
