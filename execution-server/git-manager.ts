@@ -69,6 +69,13 @@ export class GitManager {
   async commit(worktreePath: string, message: string): Promise<void> {
     const worktreeGit = simpleGit(worktreePath);
 
+    // Configure git identity for this worktree
+    const authorName = process.env.GIT_AUTHOR_NAME || 'Ralph Agent';
+    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'ralph@aicodingbot.dev';
+
+    await worktreeGit.addConfig('user.name', authorName);
+    await worktreeGit.addConfig('user.email', authorEmail);
+
     // Stage all changes
     await worktreeGit.add('.');
 
@@ -78,8 +85,10 @@ export class GitManager {
       throw new Error('No changes to commit');
     }
 
-    // Commit
-    await worktreeGit.commit(message);
+    // Commit with explicit author
+    await worktreeGit.commit(message, undefined, {
+      '--author': `${authorName} <${authorEmail}>`
+    });
   }
 
   /**

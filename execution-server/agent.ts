@@ -214,6 +214,8 @@ export class ExecutionAgent {
    */
   private generateCommitMessage(taskDescription: string, changedFiles: string[]): string {
     const title = taskDescription.split('\n')[0].substring(0, 72);
+    const authorName = process.env.GIT_AUTHOR_NAME || 'Ralph Agent';
+    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'ralph@aicodingbot.dev';
 
     return `${title}
 
@@ -222,7 +224,7 @@ ${changedFiles.map(f => `- ${f}`).join('\n')}
 
 🤖 Generated with Ralph Code
 
-Co-Authored-By: Ralph Agent <ralph@naturaumana-ai.com>`;
+Co-Authored-By: ${authorName} <${authorEmail}>`;
   }
 
   /**
