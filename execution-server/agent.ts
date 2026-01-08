@@ -214,8 +214,8 @@ export class ExecutionAgent {
    */
   private generateCommitMessage(taskDescription: string, changedFiles: string[]): string {
     const title = taskDescription.split('\n')[0].substring(0, 72);
-    const authorName = process.env.GIT_AUTHOR_NAME || 'Ralph Agent';
-    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'ralph@aicodingbot.dev';
+    const authorName = process.env.GIT_AUTHOR_NAME || 'seecretly';
+    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'seecretly@users.noreply.github.com';
 
     return `${title}
 

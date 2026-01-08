@@ -70,8 +70,8 @@ export class GitManager {
     const worktreeGit = simpleGit(worktreePath);
 
     // Configure git identity for this worktree
-    const authorName = process.env.GIT_AUTHOR_NAME || 'Ralph Agent';
-    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'ralph@aicodingbot.dev';
+    const authorName = process.env.GIT_AUTHOR_NAME || 'seecretly';
+    const authorEmail = process.env.GIT_AUTHOR_EMAIL || 'seecretly@users.noreply.github.com';
 
     await worktreeGit.addConfig('user.name', authorName);
     await worktreeGit.addConfig('user.email', authorEmail);
