@@ -30,8 +30,10 @@
   // Environment variables (set via wrangler secret)
   "vars": {
     "VIBE_PROJECT_NAME": "rocket",
-    "GITHUB_REPO_OWNER": "naturaumana-ai",
+    "GITHUB_REPO_OWNER": "seecretly",
     "GITHUB_REPO_NAME": "rocket",
+    "GITHUB_UPSTREAM_OWNER": "naturaumana-ai",
+    "GITHUB_UPSTREAM_REPO": "rocket",
     "EXECUTION_SERVER_URL": "http://134.209.61.138:3000"
   },
 

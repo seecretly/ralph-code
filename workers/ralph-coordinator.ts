@@ -139,16 +139,16 @@ async function handleExecutionCallback(request: Request, env: Env): Promise<Resp
           throw new Error(`Task ${result.taskId} not found in PRD`);
         }
 
-        // Create PR
+        // Create PR (cross-repo from fork to upstream)
         const pr = await github.createPullRequest({
-          owner: env.GITHUB_REPO_OWNER,
-          repo: env.GITHUB_REPO_NAME,
+          owner: env.GITHUB_UPSTREAM_OWNER || env.GITHUB_REPO_OWNER,
+          repo: env.GITHUB_UPSTREAM_REPO || env.GITHUB_REPO_NAME,
           title: task.description.split('\n')[0], // First line as title
           body: generatePRBody({
             description: task.description,
             learnings: result.learnings
           }),
-          head: task.branchName,
+          head: `${env.GITHUB_REPO_OWNER}:${task.branchName}`, // Cross-repo format: user:branch
           base: 'main',
           draft: false
         });
