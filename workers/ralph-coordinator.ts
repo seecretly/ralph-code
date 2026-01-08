@@ -149,7 +149,7 @@ async function handleExecutionCallback(request: Request, env: Env): Promise<Resp
             learnings: result.learnings
           }),
           head: `${env.GITHUB_REPO_OWNER}:${task.branchName}`, // Cross-repo format: user:branch
-          base: 'main',
+          base: env.GITHUB_PR_BASE_BRANCH || 'main',
           draft: false
         });
 

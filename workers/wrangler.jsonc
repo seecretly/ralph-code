@@ -34,6 +34,7 @@
     "GITHUB_REPO_NAME": "rocket",
     "GITHUB_UPSTREAM_OWNER": "naturaumana-ai",
     "GITHUB_UPSTREAM_REPO": "rocket",
+    "GITHUB_PR_BASE_BRANCH": "dev",
     "EXECUTION_SERVER_URL": "http://134.209.61.138:3000"
   },
 
