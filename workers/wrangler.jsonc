@@ -14,18 +14,25 @@
     "bindings": [
       {
         "name": "RALPH_STATE",
-        "class_name": "RalphStateDO",
-        "script_name": "ralph-coordinator"
+        "class_name": "RalphStateDO"
       }
     ]
   },
+
+  // Migrations for Durable Objects
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["RalphStateDO"]
+    }
+  ],
 
   // Environment variables (set via wrangler secret)
   "vars": {
     "VIBE_PROJECT_NAME": "rocket",
     "GITHUB_REPO_OWNER": "naturaumana-ai",
     "GITHUB_REPO_NAME": "rocket",
-    "EXECUTION_SERVER_URL": "http://localhost:3000"
+    "EXECUTION_SERVER_URL": "https://restrict-inventory-derived-four.trycloudflare.com"
   },
 
   // Secrets (set via wrangler secret put)

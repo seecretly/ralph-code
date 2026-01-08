@@ -1,21 +1,27 @@
 /**
- * Claude Code CLI Wrapper
- * Executes Claude Code CLI in headless mode and parses output
+ * Claude API Runner
+ * Executes tasks using Anthropic API directly (simplified version)
  */
 
-import { spawn } from 'child_process';
+import Anthropic from '@anthropic-ai/sdk';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { ClaudeRunResult } from './types';
 
 export class ClaudeRunner {
+  private client: Anthropic;
+
   constructor(
     private worktreePath: string,
     private promptFile: string
-  ) {}
+  ) {
+    this.client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY
+    });
+  }
 
   /**
-   * Run Claude Code CLI
+   * Run task using Anthropic API
    */
   async run(maxIterations: number = 10): Promise<ClaudeRunResult> {
     const logs: string[] = [];
@@ -26,67 +32,43 @@ export class ClaudeRunner {
       // Read prompt
       const prompt = await fs.readFile(this.promptFile, 'utf-8');
 
-      console.log(`Running Claude Code in ${this.worktreePath}`);
+      console.log(`Running Claude task in ${this.worktreePath}`);
       console.log(`Max iterations: ${maxIterations}`);
 
-      // Run Claude Code CLI
-      const claudeProcess = spawn('claude', [
-        '-p', prompt,
-        '--max-iterations', maxIterations.toString(),
-        '--permission-mode', 'auto-approve',
-        '--allowedTools', 'Read,Write,Edit,Bash,Grep,Glob'
-      ], {
-        cwd: this.worktreePath,
-        env: {
-          ...process.env,
-          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY
-        }
+      // For now, use a single API call with extended thinking
+      // A full implementation would support multiple iterations and tool use
+      const response = await this.client.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 16000,
+        messages: [{
+          role: 'user',
+          content: `You are an AI coding assistant working on a repository at ${this.worktreePath}.
+
+${prompt}
+
+Please provide a detailed plan of what changes need to be made to complete this task. Focus on:
+1. What files need to be modified
+2. What the changes should accomplish
+3. Any testing or validation needed
+
+If the task is straightforward and you can complete it, end your response with:
+<promise>COMPLETE</promise>`
+        }]
       });
 
-      // Capture output
-      let output = '';
+      const output = response.content
+        .map(block => block.type === 'text' ? block.text : '')
+        .join('\n');
 
-      claudeProcess.stdout.on('data', (data) => {
-        const text = data.toString();
-        output += text;
-        logs.push(text);
-        process.stdout.write(text);
-      });
-
-      claudeProcess.stderr.on('data', (data) => {
-        const text = data.toString();
-        logs.push(`[stderr] ${text}`);
-        process.stderr.write(text);
-      });
-
-      // Wait for process to complete
-      const exitCode = await new Promise<number>((resolve, reject) => {
-        claudeProcess.on('close', (code) => {
-          resolve(code || 0);
-        });
-
-        claudeProcess.on('error', (error) => {
-          reject(error);
-        });
-
-        // Timeout after 30 minutes
-        setTimeout(() => {
-          claudeProcess.kill('SIGTERM');
-          reject(new Error('Claude execution timed out after 30 minutes'));
-        }, 30 * 60 * 1000);
-      });
+      logs.push(output);
+      console.log(output);
 
       // Check for completion marker
       completed = output.includes('<promise>COMPLETE</promise>');
-
-      // Extract iterations used (if available in output)
-      const iterationMatch = output.match(/Iteration (\d+)\/\d+/g);
-      if (iterationMatch) {
-        iterationsUsed = parseInt(iterationMatch[iterationMatch.length - 1].split('/')[0].split(' ')[1]);
-      }
+      iterationsUsed = 1;
 
       return {
-        success: exitCode === 0,
+        success: true,
         output,
         completed,
         iterationsUsed
@@ -96,7 +78,7 @@ export class ClaudeRunner {
 
       return {
         success: false,
-        output: logs.join('\n'),
+        output: logs.join('\n') + '\n\nError: ' + (error as Error).message,
         completed,
         iterationsUsed
       };

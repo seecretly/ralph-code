@@ -4,14 +4,14 @@
  * Handles cron triggers, HTTP requests, and orchestrates task execution
  */
 
-import { RalphStateDO } from './durables/ralph-state';
 import { VibeKanbanClient } from './integrations/vibe-kanban';
 import { GitHubClient, generatePRBody } from './integrations/github';
 import { ExecutionServerClient } from './integrations/execution-server';
 import { Env, Task, ExecutionResult } from './utils/types';
 import { logger } from './utils/common';
 
-export { RalphStateDO };
+// Export Durable Object
+export { RalphStateDO } from './durables/ralph-state';
 
 /**
  * Main worker export
