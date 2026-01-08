@@ -32,7 +32,7 @@
     "VIBE_PROJECT_NAME": "rocket",
     "GITHUB_REPO_OWNER": "naturaumana-ai",
     "GITHUB_REPO_NAME": "rocket",
-    "EXECUTION_SERVER_URL": "https://restrict-inventory-derived-four.trycloudflare.com"
+    "EXECUTION_SERVER_URL": "http://134.209.61.138:3000"
   },
 
   // Secrets (set via wrangler secret put)
